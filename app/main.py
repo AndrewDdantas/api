@@ -80,13 +80,15 @@ Endpoints específicos para aplicativo mobile dos engenheiros: `/api/v1/mobile/*
     ]
 )
 
-# Configurar CORS
+# Configurar CORS - Permite todas as origens em desenvolvimento
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.ALLOWED_ORIGINS,
+    allow_origins=["*"],  # Em produção, especificar domínios
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],
+    max_age=3600,  # Cache preflight por 1 hora
 )
 
 # Incluir rotas
