@@ -57,7 +57,24 @@ def get_obra(
         raise HTTPException(status_code=404, detail="Obra not found")
     if obra.gestor_id != current_user.id:
         raise HTTPException(status_code=403, detail="Not enough permissions")
-    return obra
+    
+    # Transformar ObraEngineer em User para serialização correta
+    engineers_list = [oe.engineer for oe in obra.engineers]
+    
+    # Criar resposta com dados transformados
+    return {
+        "id": obra.id,
+        "nome": obra.nome,
+        "descricao": obra.descricao,
+        "endereco": obra.endereco,
+        "latitude": obra.latitude,
+        "longitude": obra.longitude,
+        "is_active": obra.is_active,
+        "gestor_id": obra.gestor_id,
+        "created_at": obra.created_at,
+        "engineers": engineers_list,
+        "checklist_templates": obra.checklist_templates
+    }
 
 
 @router.put("/{obra_id}", response_model=ObraResponse)

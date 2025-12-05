@@ -209,32 +209,6 @@ class ObraDetailResponse(ObraResponse):
     engineers: List[UserResponse] = []
     checklist_templates: List[ChecklistTemplateResponse] = []
     
-    @staticmethod
-    def model_validate(obj):
-        """Customiza a validação para lidar com relacionamentos ORM"""
-        # Extrair usuários dos ObraEngineer
-        engineers_list = []
-        if hasattr(obj, 'engineers'):
-            for oe in obj.engineers:
-                if hasattr(oe, 'engineer'):
-                    engineers_list.append(oe.engineer)
-        
-        # Criar dict com dados corretos
-        data = {
-            'id': obj.id,
-            'nome': obj.nome,
-            'descricao': obj.descricao,
-            'endereco': obj.endereco,
-            'latitude': obj.latitude,
-            'longitude': obj.longitude,
-            'is_active': obj.is_active,
-            'gestor_id': obj.gestor_id,
-            'created_at': obj.created_at,
-            'engineers': engineers_list,
-            'checklist_templates': obj.checklist_templates if hasattr(obj, 'checklist_templates') else []
-        }
-        return super(ObraDetailResponse, ObraDetailResponse).model_validate(data)
-    
     class Config:
         from_attributes = True
 
