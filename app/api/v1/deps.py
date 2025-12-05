@@ -69,6 +69,6 @@ def get_current_engineer(
     if current_user.role != UserRole.ENGENHEIRO:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not enough permissions. Engineer role required."
+            detail=f"Not enough permissions. Engineer role required. Current role: {current_user.role}"
         )
     return current_user
